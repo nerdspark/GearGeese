@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.commands.*;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -38,6 +39,7 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
+  
 
   // Establish a Sendable Chooser that will be able to be sent to the SmartDashboard, allowing selection of desired auto
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -46,9 +48,9 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1,
-                                                                () -> driverXbox.getLeftX() * -1)
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                                () -> Math.pow(driverXbox.getRightY(), 3),
+                                                                () -> Math.pow(driverXbox.getRightX(),3))
+                                                            .withControllerRotationAxis(() -> driverXbox.getLeftX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -84,7 +86,7 @@ public class RobotContainer
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
-
+    driverXbox.povDown().whileTrue(new AbsoluteDriveAdv(drivebase, () -> 0, () -> 0, () -> 0, () -> false, () -> true, () -> false, () -> false));
   }
 
   /**
