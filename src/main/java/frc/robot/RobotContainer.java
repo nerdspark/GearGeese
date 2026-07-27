@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -25,6 +26,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.commands.*;
 import java.io.File;
 import swervelib.SwerveInputStream;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -39,6 +41,8 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
+  
+  private Pigeon2 pigeon2;
   
 
   // Establish a Sendable Chooser that will be able to be sent to the SmartDashboard, allowing selection of desired auto
@@ -60,6 +64,7 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    pigeon2 = new Pigeon2(25);
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
@@ -87,6 +92,9 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     driverXbox.povDown().whileTrue(new AbsoluteDriveAdv(drivebase, () -> 0, () -> 0, () -> 0, () -> false, () -> true, () -> false, () -> false));
+    //driverXbox.y().onTrue(new InstantCommand(() -> pigeon2.reset()).alongWith(new InstantCommand(() -> drivebase.resetOdometry(new Pose2d(drivebase.getPose().getX(),
+                                                                                                                                          //drivebase.getPose().getY(),
+                                                                                                                                          //new Rotation2d(135))))));
   }
 
   /**
