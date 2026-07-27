@@ -52,8 +52,8 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> Math.pow(driverXbox.getRightY(), 3),
-                                                                () -> Math.pow(driverXbox.getRightX(),3))
+                                                                () -> driverXbox.getRightY(),
+                                                                () -> driverXbox.getRightX())
                                                             .withControllerRotationAxis(() -> driverXbox.getLeftX() * -1)
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
