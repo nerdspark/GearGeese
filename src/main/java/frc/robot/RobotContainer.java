@@ -92,9 +92,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     driverXbox.povDown().whileTrue(new AbsoluteDriveAdv(drivebase, () -> 0, () -> 0, () -> 0, () -> false, () -> true, () -> false, () -> false));
-    //driverXbox.y().onTrue(new InstantCommand(() -> pigeon2.reset()).alongWith(new InstantCommand(() -> drivebase.resetOdometry(new Pose2d(drivebase.getPose().getX(),
-                                                                                                                                          //drivebase.getPose().getY(),
-                                                                                                                                          //new Rotation2d(135))))));
+    
   }
 
   /**
